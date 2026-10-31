@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\Lovely\Documents\Codex\2026-10-29\answ\outputs\Activity9_Queuing_System\source
+configfile: pytest.ini
+collected 5 items
+
+tests\test_queue.py ...F.                                                [100%]
+
+================================== FAILURES ===================================
+_____________________ test_duplicate_ticket_is_prevented ______________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="c772d51d36a505031cf9a69cae2e25c3")>
+app_url = 'http://127.0.0.1:64933'
+evidence = <function evidence.<locals>.capture at 0x000001F0E4A4B420>
+
+    @pytest.mark.regression
+    def test_duplicate_ticket_is_prevented(driver, app_url, evidence):
+        """AUTO-Q04 -> QTC-04, adapted from Activity 5 TC-06/R6, DEF-004 principle."""
+        queue = sign_in(driver, app_url)
+        assert 'created' in queue.issue('CUST-001', 'Registrar')
+        first = queue.rows()
+        assert first == [['Q-001', 'CUST-001', 'Registrar', 'Waiting']]
+        message = queue.issue('CUST-001', 'Registrar')
+        evidence('AUTO-Q04-after-repeat')
+>       assert 'already has an active ticket' in message, f'Duplicate not rejected: {message}'
+E       AssertionError: Duplicate not rejected: Ticket Q-002 created
+E       assert 'already has an active ticket' in 'Ticket Q-002 created'
+
+tests\test_queue.py:65: AssertionError
+----------------------------- Captured log setup ------------------------------
+INFO     queue-tests:conftest.py:80 browser=chrome version=156.0.8078.73
+- generated xml file: C:\Users\Lovely\Documents\Codex\2026-10-29\answ\outputs\Activity9_Queuing_System\evidence\run-01\junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_queue.py::test_duplicate_ticket_is_prevented - AssertionErr...
+=================== 1 failed, 4 passed in 61.46s (0:01:01) ====================

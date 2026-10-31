@@ -1,0 +1,1 @@
+Supplemental captures recreated the baseline/fixed AUTO-Q04 states with a taller browser window so both ticket rows are visible. These were captured after the two full test runs, not at the original test timestamps. Original unmodified screenshots and logs remain in run-01 and run-02. Reproduce from source/: python -m scripts.capture_demo.

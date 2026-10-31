@@ -1,0 +1,74 @@
+[
+  {
+    "run": 1,
+    "build": "Q-DEMO-1.0-bug",
+    "passed": 4,
+    "failed": 1,
+    "errors": 0,
+    "duration": 61.453,
+    "tests": [
+      {
+        "name": "test_login[AUTO-Q01]",
+        "status": "PASS",
+        "seconds": 11.357
+      },
+      {
+        "name": "test_login[AUTO-Q02]",
+        "status": "PASS",
+        "seconds": 10.939
+      },
+      {
+        "name": "test_lockout_after_five_invalid_attempts",
+        "status": "PASS",
+        "seconds": 12.206
+      },
+      {
+        "name": "test_duplicate_ticket_is_prevented",
+        "status": "FAIL",
+        "seconds": 11.774
+      },
+      {
+        "name": "test_valid_ticket_is_saved",
+        "status": "PASS",
+        "seconds": 13.438
+      }
+    ],
+    "browser": "156.0.8078.73"
+  },
+  {
+    "run": 2,
+    "build": "Q-DEMO-1.1-fixed",
+    "passed": 5,
+    "failed": 0,
+    "errors": 0,
+    "duration": 75.364,
+    "tests": [
+      {
+        "name": "test_login[AUTO-Q01]",
+        "status": "PASS",
+        "seconds": 14.732
+      },
+      {
+        "name": "test_login[AUTO-Q02]",
+        "status": "PASS",
+        "seconds": 15.905
+      },
+      {
+        "name": "test_lockout_after_five_invalid_attempts",
+        "status": "PASS",
+        "seconds": 16.162
+      },
+      {
+        "name": "test_duplicate_ticket_is_prevented",
+        "status": "PASS",
+        "seconds": 12.89
+      },
+      {
+        "name": "test_valid_ticket_is_saved",
+        "status": "PASS",
+        "seconds": 14.479
+      }
+    ],
+    "browser": "156.0.8078.73"
+  }
+]

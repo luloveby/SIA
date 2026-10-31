@@ -1,0 +1,4 @@
+[
+  {"id":"AUTO-Q01", "manual":"QTC-01", "source":"Activity 5 TC-01/R1", "kind":"valid", "expected":"dashboard"},
+  {"id":"AUTO-Q02", "manual":"QTC-03", "source":"Activity 5 TC-03/R3", "kind":"short", "password":"Abc123!", "expected":"at least 8 characters"}
+]

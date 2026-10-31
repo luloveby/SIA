@@ -1,0 +1,29 @@
+2026-10-29 17:11:43,783 INFO ACTUAL SAMPLE DEMO RUN; Python=3.12.14 Selenium=4.51.0 pytest=8.3.3 bug=True
+2026-10-29 17:11:51,450 INFO browser=chrome version=156.0.8078.73
+2026-10-29 17:11:52,777 INFO tests/test_queue.py::test_login[AUTO-Q01] [call] PASSED 1.325s
+2026-10-29 17:12:02,146 INFO browser=chrome version=156.0.8078.73
+2026-10-29 17:12:03,876 INFO tests/test_queue.py::test_login[AUTO-Q02] [call] PASSED 1.729s
+2026-10-29 17:12:11,682 INFO browser=chrome version=156.0.8078.73
+2026-10-29 17:12:15,968 INFO tests/test_queue.py::test_lockout_after_five_invalid_attempts [call] PASSED 4.284s
+2026-10-29 17:12:25,076 INFO browser=chrome version=156.0.8078.73
+2026-10-29 17:12:28,452 INFO tests/test_queue.py::test_duplicate_ticket_is_prevented [call] FAILED 2.542s
+2026-10-29 17:12:28,452 ERROR driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="c772d51d36a505031cf9a69cae2e25c3")>
+app_url = 'http://127.0.0.1:64933'
+evidence = <function evidence.<locals>.capture at 0x000001F0E4A4B420>
+
+    @pytest.mark.regression
+    def test_duplicate_ticket_is_prevented(driver, app_url, evidence):
+        """AUTO-Q04 -> QTC-04, adapted from Activity 5 TC-06/R6, DEF-004 principle."""
+        queue = sign_in(driver, app_url)
+        assert 'created' in queue.issue('CUST-001', 'Registrar')
+        first = queue.rows()
+        assert first == [['Q-001', 'CUST-001', 'Registrar', 'Waiting']]
+        message = queue.issue('CUST-001', 'Registrar')
+        evidence('AUTO-Q04-after-repeat')
+>       assert 'already has an active ticket' in message, f'Duplicate not rejected: {message}'
+E       AssertionError: Duplicate not rejected: Ticket Q-002 created
+E       assert 'already has an active ticket' in 'Ticket Q-002 created'
+
+tests\test_queue.py:65: AssertionError
+2026-10-29 17:12:38,028 INFO browser=chrome version=156.0.8078.73
+2026-10-29 17:12:41,478 INFO tests/test_queue.py::test_valid_ticket_is_saved [call] PASSED 3.448s

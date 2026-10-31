@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Group 1 Queue Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f8;color:#152638;font:16px/1.5 Arial,sans-serif}header{background:#122d40;color:white;padding:24px 48px;display:flex;align-items:center;justify-content:space-between}header strong{font-size:23px}header span{font-size:13px;color:#c7dce8}main{max-width:1100px;margin:36px auto;padding:0 24px}h1{font-size:28px;margin:0 0 10px}h2{font-size:20px}p{color:#536779}.notice{padding:12px 18px;background:#e1edf4;border-radius:5px;margin-bottom:28px}.panel{background:white;border:1px solid #d6e0e8;border-radius:8px;padding:28px;margin-bottom:24px}.login{max-width:480px;margin:40px auto}label{display:block;font-weight:bold;margin:12px 0 6px}input,select{width:100%;padding:11px;font-size:16px;border:1px solid #9caebc;border-radius:4px}button{background:#12677b;color:white;border:0;border-radius:4px;padding:12px 22px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:18px}button:disabled{opacity:.6}.message{padding:12px 0;min-height:45px;font-weight:bold;color:#a52b2b}.success{color:#146448}.form-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:20px;align-items:end}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:14px;border-bottom:1px solid #d6e0e8}th{background:#eaf0f5}.badge{background:#e5f2ec;color:#246447;padding:5px 12px;border-radius:14px}footer{font-size:13px;color:#596c7e;margin-top:30px}[hidden]{display:none!important}
+</style></head><body>
+<header><strong>GROUP 1 &nbsp; / &nbsp; QUEUING SYSTEM</strong><span>Classroom demo · Synthetic data only</span></header>
+<main><div class="notice">Sample automation target for IT302 Activity 9. This demo does not represent the group's deployed prototype.</div>
+<section id="login-panel" class="panel login"><h1>Staff sign in</h1><p>Access the service queue dashboard.</p>
+<form id="login-form"><label for="username">Username</label><input id="username" data-test="username" autocomplete="off" required>
+<label for="password">Password</label><input id="password" data-test="password" type="password" required>
+<button data-test="login-submit">Sign in</button></form><div role="alert" class="message" data-test="login-error"></div></section>
+<section id="queue-panel" hidden><h1>Queue dashboard</h1><p data-test="staff-identity"></p>
+<div class="panel"><h2>Issue a queue ticket</h2><form id="ticket-form" class="form-grid">
+<div><label for="customer">Synthetic customer ID</label><input id="customer" data-test="customer-id" required></div>
+<div><label for="service">Service</label><select id="service" data-test="service"><option>Registrar</option><option>Cashier</option></select></div>
+<button data-test="issue-ticket">Issue ticket</button></form><div role="status" class="message" data-test="ticket-message"></div></div>
+<div class="panel"><h2>Active tickets <span data-test="ticket-count">0</span></h2><table><thead><tr><th>Ticket</th><th>Customer</th><th>Service</th><th>Status</th></tr></thead><tbody data-test="ticket-list"></tbody></table></div></section>
+<footer>Test fixture: loopback server · isolated sample records · Q-DEMO series</footer></main>
+<script>
+const $=s=>document.querySelector(s);const test=n=>$(`[data-test="${n}"]`);
+async function api(path,body){const r=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});return {ok:r.ok,status:r.status,body:await r.json()}}
+async function refresh(){const r=await api('/api/tickets');if(!r.ok)return false;const tbody=test('ticket-list');tbody.replaceChildren();for(const ticket of r.body.tickets){const tr=document.createElement('tr');tr.dataset.test='ticket-row';for(const name of ['number','customer','service','status']){const td=document.createElement('td');td.dataset.field=name;td.textContent=ticket[name];tr.append(td)}tbody.append(tr)}test('ticket-count').textContent=r.body.tickets.length;return r.body.username}
+async function showQueue(username){$('#login-panel').hidden=true;$('#queue-panel').hidden=false;test('staff-identity').textContent=`Signed in as ${username}`;await refresh()}
+$('#login-form').addEventListener('submit',async e=>{e.preventDefault();const b=test('login-submit');b.disabled=true;try{const r=await api('/api/login',{username:test('username').value,password:test('password').value});if(r.ok){location.hash='queue';await showQueue(r.body.username)}else test('login-error').textContent=r.body.message}finally{b.disabled=false}});
+$('#ticket-form').addEventListener('submit',async e=>{e.preventDefault();const b=test('issue-ticket');b.disabled=true;test('ticket-message').textContent='';try{const r=await api('/api/tickets',{customer:test('customer-id').value,service:test('service').value});await refresh();const m=test('ticket-message');m.classList.toggle('success',r.ok);m.textContent=r.body.message}finally{b.disabled=false}});
+// Refresh must honor the server session, rather than merely trusting a URL fragment.
+if(location.hash==='#queue'){refresh().then(ok=>{if(ok)showQueue(ok);else location.hash=''})}
+</script></body></html>

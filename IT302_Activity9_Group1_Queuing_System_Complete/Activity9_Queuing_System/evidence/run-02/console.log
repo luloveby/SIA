@@ -1,0 +1,10 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\Lovely\Documents\Codex\2026-10-29\answ\outputs\Activity9_Queuing_System\source
+configfile: pytest.ini
+collected 5 items
+
+tests\test_queue.py .....                                                [100%]
+
+- generated xml file: C:\Users\Lovely\Documents\Codex\2026-10-29\answ\outputs\Activity9_Queuing_System\evidence\run-02\junit.xml -
+======================== 5 passed in 75.37s (0:01:15) =========================

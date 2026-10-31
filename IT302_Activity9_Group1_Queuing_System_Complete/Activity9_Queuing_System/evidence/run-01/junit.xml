@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="61.453" timestamp="2026-10-29T17:11:43.844933+08:00" hostname="13-CULILAP"><testcase classname="tests.test_queue" name="test_login[AUTO-Q01]" time="11.357" /><testcase classname="tests.test_queue" name="test_login[AUTO-Q02]" time="10.939" /><testcase classname="tests.test_queue" name="test_lockout_after_five_invalid_attempts" time="12.206" /><testcase classname="tests.test_queue" name="test_duplicate_ticket_is_prevented" time="11.774"><failure message="AssertionError: Duplicate not rejected: Ticket Q-002 created&#10;assert 'already has an active ticket' in 'Ticket Q-002 created'">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="c772d51d36a505031cf9a69cae2e25c3")&gt;
+app_url = 'http://127.0.0.1:64933'
+evidence = &lt;function evidence.&lt;locals&gt;.capture at 0x000001F0E4A4B420&gt;
+
+    @pytest.mark.regression
+    def test_duplicate_ticket_is_prevented(driver, app_url, evidence):
+        """AUTO-Q04 -&gt; QTC-04, adapted from Activity 5 TC-06/R6, DEF-004 principle."""
+        queue = sign_in(driver, app_url)
+        assert 'created' in queue.issue('CUST-001', 'Registrar')
+        first = queue.rows()
+        assert first == [['Q-001', 'CUST-001', 'Registrar', 'Waiting']]
+        message = queue.issue('CUST-001', 'Registrar')
+        evidence('AUTO-Q04-after-repeat')
+&gt;       assert 'already has an active ticket' in message, f'Duplicate not rejected: {message}'
+E       AssertionError: Duplicate not rejected: Ticket Q-002 created
+E       assert 'already has an active ticket' in 'Ticket Q-002 created'
+
+tests\test_queue.py:65: AssertionError</failure></testcase><testcase classname="tests.test_queue" name="test_valid_ticket_is_saved" time="13.438" /></testsuite></testsuites>
